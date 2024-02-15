@@ -186,9 +186,9 @@ namespace Pong_Game
         }
         private void scoring()
         {
-            if(scoreP1 == 3 || scoreP2 == 3)
+            if(scoreP1 == 5 || scoreP2 == 5)
             {              
-                if(scoreP1 == 3)
+                if(scoreP1 == 5)
                 {
                     p2heart[heartOutP2].Visible = false;
                     heartOutP2++;
@@ -210,7 +210,7 @@ namespace Pong_Game
                         MtchWnr.Text = p1 + " has won match " + matchNr;
                     }
                 }
-                else if(scoreP2 == 3)
+                else if(scoreP2 == 5)
                 {
                     p1heart[heartOutP1].Visible = false;
                     heartOutP1++;
