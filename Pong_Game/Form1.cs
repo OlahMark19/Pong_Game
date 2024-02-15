@@ -29,6 +29,8 @@ namespace Pong_Game
         int scoreTotalP2;
         int ballx;
         int bally;
+        int lastBallX;
+        int lastBallY;
         int playersSpeed;
         int xMidpoint;
         int yMidpoint;
@@ -123,8 +125,8 @@ namespace Pong_Game
                 matchLbl.Text = "Match " + matchNr;
 
 
-                ballx = 10;
-                bally = 10;
+                ballx = 15;
+                bally = 15;
                 playersSpeed = 10;
 
                 ballx = rnd.Next(2) == 0 ? -rnd.Next(15, 20) : rnd.Next(15, 20);
@@ -135,37 +137,38 @@ namespace Pong_Game
 
                 player1.Top = 321;
                 player2.Top = 321;
-            }
-            else
-            {
-               
-            
-            }
+            }       
 
         }
         private void pointsBoard()
         {
-          
-            points.Visible = true;
-
-            points.AppendText(p1 + "\n");
-
-            for(int i = 0; i < matchesP1.Length; i++)
+            if(points.Visible == false)
             {
-                points.AppendText($"Match {i + 1}: {matchesP1[i]} points\n");
+                points.Visible = true;
+
+                points.AppendText(p1 + "\n");
+
+                for (int i = 0; i < matchesP1.Length; i++)
+                {
+                    points.AppendText($"Match {i + 1}: {matchesP1[i]} points\n");
+                }
+
+                points.AppendText("Total points earned: " + scoreTotalP1 + "\n\n");
+
+                points.AppendText(p2 + "\n");
+
+                for (int i = 0; i < matchesP2.Length; i++)
+                {
+                    points.AppendText($"Match {i + 1}: {matchesP2[i]} points\n");
+                }
+
+                points.AppendText("Total points earned: " + scoreTotalP2 + "\n\n");
             }
-
-            points.AppendText("Total points earned: " + scoreTotalP1 + "\n\n");
-
-            points.AppendText(p2 + "\n");
-
-            for(int i = 0; i< matchesP2.Length; i++)
+            else
             {
-                points.AppendText($"Match {i + 1}: {matchesP2[i]} points\n");
-            }
-
-            points.AppendText("Total points earned: " + scoreTotalP2 + "\n\n");
-
+                points.Visible = false;
+                points.Clear();
+            }                 
         }
         private void ballIsOut()
         {
@@ -176,6 +179,9 @@ namespace Pong_Game
             label2.Visible = true;
             matchLbl.Visible = false;
             ballOutMsg.Visible = true;
+
+            lastBallX = ball.Left;
+            lastBallY = ball.Top;
 
         }
         private void scoring()
@@ -214,7 +220,7 @@ namespace Pong_Game
                         gameTimer.Stop();
                         final.Visible = true;
                         final.Text = p2 + " has won the game with " + scoreTotalP2 + " points";
-                        label2.Text = "Press P to see match points";
+                        label2.Text = "Press P to see match points\nPress R to start a new game\nESC to exit game";
                         matchesP2[matchNr - 1] = scoreP2;
                         matchesP1[matchNr - 1] = scoreP1;
                     }
@@ -282,7 +288,9 @@ namespace Pong_Game
                 scoring();
 
                 ballIsOut();
-     
+
+                ballOutMsg.Location = new Point(lastBallX + 3, lastBallY);
+
             }
 
             if(ball.Left + ball.Width > ClientSize.Width)
@@ -292,11 +300,12 @@ namespace Pong_Game
                 isBallOut = true;
                 scoring();
 
-                ballIsOut();      
+                ballIsOut();
+
+                ballOutMsg.Location = new Point(lastBallX - 115, lastBallY);
             }
-           
 
-
+          
             foreach (Control x in this.Controls)
             {             
                 if(x is PictureBox && (string)x.Tag == "wallBtm")
@@ -384,9 +393,15 @@ namespace Pong_Game
                 }
                 
             }
-            if(e.KeyCode == Keys.P)
+            if (e.KeyCode == Keys.P)
             {
                 pointsBoard();
+            }
+            if(e.KeyCode == Keys.R)
+            {
+                Application.Exit();
+
+                System.Diagnostics.Process.Start(Application.ExecutablePath);
             }
 
             if(e.KeyCode == Keys.Escape)

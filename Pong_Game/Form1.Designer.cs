@@ -474,7 +474,7 @@
             this.final.BackColor = System.Drawing.Color.Transparent;
             this.final.Font = new System.Drawing.Font("Lucida Console", 26.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.final.ForeColor = System.Drawing.Color.Lime;
-            this.final.Location = new System.Drawing.Point(297, 168);
+            this.final.Location = new System.Drawing.Point(243, 166);
             this.final.Name = "final";
             this.final.Size = new System.Drawing.Size(147, 35);
             this.final.TabIndex = 9;
@@ -497,7 +497,7 @@
             this.MtchWnr.BackColor = System.Drawing.Color.Transparent;
             this.MtchWnr.Font = new System.Drawing.Font("Lucida Console", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MtchWnr.ForeColor = System.Drawing.Color.White;
-            this.MtchWnr.Location = new System.Drawing.Point(453, 310);
+            this.MtchWnr.Location = new System.Drawing.Point(438, 168);
             this.MtchWnr.Name = "MtchWnr";
             this.MtchWnr.Size = new System.Drawing.Size(0, 29);
             this.MtchWnr.TabIndex = 11;
