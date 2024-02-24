@@ -20,6 +20,8 @@ namespace Pong_Game
         bool p2goDown;
         bool isGameStarted = false;
         bool isBallOut = false;
+        bool isGamePaused = true;
+        bool spaceEnabled = false;
         string p1;
         string p2;
 
@@ -57,6 +59,9 @@ namespace Pong_Game
             points.Visible = false;
             ballOutMsg.Visible = false;
 
+            this.Width = 1295;
+            this.Height = 760;
+
             xMidpoint = ClientSize.Width / 2;
             yMidpoint = ClientSize.Height / 2;
         }
@@ -83,40 +88,47 @@ namespace Pong_Game
         private void timer1_Tick(object sender, EventArgs e)
         {
 
-            if(len == 1)
+            if (isGamePaused)
             {
-                countdown.Visible = true;
-                countdown.Text = "3";
-                len++;
+                if (len == 1)
+                {
+                    countdown.Visible = true;
+                    countdown.Text = "3";
+                    len++;
+                }
+                else if (len == 2)
+                {
+                    countdown.Text = "2";
+                    len++;
+                }
+                else if (len == 3)
+                {
+                    countdown.Text = "1";
+                    len++;
+                }
+                else if (len == 4)
+                {
+                    countdown.Text = "Start!";
+                    len++;
+
+                }
+                else if (len == 5)
+                {
+                    countdown.Visible = false;
+                    isGameStarted = true;
+                    spaceEnabled = true;
+                    timer1.Stop();
+                    len = 1;
+                    SetupGame();
+                }
             }
-            else if(len == 2)
-            {
-                countdown.Text = "2";
-                len++;
-            }
-            else if(len == 3)
-            {
-                countdown.Text = "1";
-                len++;
-            }
-            else if(len == 4)
-            {
-                countdown.Text = "Start!";
-                len++;
-                
-            }
-            else if(len == 5)
-            {
-                countdown.Visible = false;
-                timer1.Stop();
-                len = 1;
-                SetupGame();
-            }
-            
+                             
+           
         }      
        
         private void SetupGame()
         {
+            isGamePaused = false;
 
             if (!isBallOut)
             {
@@ -129,8 +141,8 @@ namespace Pong_Game
                 bally = 15;
                 playersSpeed = 10;
 
-                ballx = rnd.Next(2) == 0 ? -rnd.Next(15, 20) : rnd.Next(15, 20);
-                bally = rnd.Next(2) == 0 ? -rnd.Next(15, 20) : rnd.Next(15, 20);
+                ballx = rnd.Next(2) == 0 ? -rnd.Next(5, 10) : rnd.Next(5, 10);
+                bally = rnd.Next(2) == 0 ? -rnd.Next(5, 10) : rnd.Next(5, 10);
 
                 ball.Left = xMidpoint;
                 ball.Top = yMidpoint;
@@ -174,6 +186,8 @@ namespace Pong_Game
         {
             gameTimer.Stop();
             isGameStarted = false;
+            spaceEnabled = false;
+            isGamePaused = true;
 
             
             label2.Visible = true;
@@ -249,6 +263,7 @@ namespace Pong_Game
             
             player1scr.Text = p1 + ": " + scoreP1;
             player2scr.Text = p2 + ": " + scoreP2;
+          
            
 
             if (p1goUp == true && player1.Top > 0)
@@ -374,8 +389,7 @@ namespace Pong_Game
                 dir4.Visible = false;
 
                 if (!isGameStarted)
-                {
-                    isGameStarted = true;
+                {                                   
                     label2.Visible = false;
                     MtchWnr.Visible = false;
                     matchLbl.Visible = true;
@@ -393,9 +407,32 @@ namespace Pong_Game
                 }
                 
             }
-            if (e.KeyCode == Keys.P)
+            if(e.KeyCode == Keys.Space && spaceEnabled)
             {
+                label2.Text = "Game Paused";               
+                isGamePaused = !isGamePaused;
+
+                if (isGameStarted)
+                {
+                    if (!isGamePaused)
+                    {
+                        matchLbl.Visible = true;
+                        label2.Visible = false;
+                        gameTimer.Start();
+                    }
+                    else
+                    {
+                        matchLbl.Visible = false;
+                        label2.Visible = true;
+                        gameTimer.Stop();
+                    }
+                }
+                
+            }
+            if (e.KeyCode == Keys.P)
+            {              
                 pointsBoard();
+                
             }
             if(e.KeyCode == Keys.R)
             {
