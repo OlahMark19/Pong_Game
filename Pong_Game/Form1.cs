@@ -432,6 +432,7 @@ namespace Pong_Game
             if (e.KeyCode == Keys.P)
             {              
                 pointsBoard();
+                points.Enabled = false;
                 
             }
             if(e.KeyCode == Keys.R)
